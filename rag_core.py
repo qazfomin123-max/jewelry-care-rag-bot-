@@ -12,7 +12,7 @@ API_KEY = os.environ.get("TOOKEN_API_KEY")
 
 CHROMA_DB_DIR = "chroma_db"
 COLLECTION_NAME = "jewelry_care_kb"
-EMBEDDING_MODEL_NAME = "paraphrase-multilingual-MiniLM-L12-v2"
+EMBEDDING_MODEL_NAME = "intfloat/multilingual-e5-small"
 
 # Настраиваются через .env, чтобы можно было подбирать без правки кода.
 TOP_K = int(os.environ.get("RAG_TOP_K", 9))
