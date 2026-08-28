@@ -1,5 +1,7 @@
 import os
 import glob
+os.environ["OMP_NUM_THREADS"] = "1"
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 import chromadb
 from chromadb.utils import embedding_functions
