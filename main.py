@@ -1,7 +1,8 @@
 import logging
 import os
 import build_index
-
+os.environ["OMP_NUM_THREADS"] = "1"
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 from dotenv import load_dotenv
 from telegram import Update
 from telegram.ext import (
