@@ -1,6 +1,9 @@
 import os
 os.environ["OMP_NUM_THREADS"] = "1"
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
+os.environ["OMP_NUM_THREADS"] = "1"
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
+os.environ["HF_HUB_DISABLE_XET"] = "1"
 import glob
 import chromadb
 from chromadb.utils import embedding_functions
