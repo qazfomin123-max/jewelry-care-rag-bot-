@@ -9,7 +9,7 @@ from chromadb.utils import embedding_functions
 KNOWLEDGE_BASE_DIR = "knowledge_base"
 CHROMA_DB_DIR = "chroma_db"
 COLLECTION_NAME = "jewelry_care_kb"
-EMBEDDING_MODEL_NAME = " distiluse-base-multilingual-cased-v2"
+EMBEDDING_MODEL_NAME = " paraphrase-multilingual-MiniLM-L12-v2"
 
 MIN_CHUNK_CHARS = 30
 TARGET_CHUNK_CHARS = 1000   # целевой размер блока — группируем абзацы, пока не наберём этот объём
