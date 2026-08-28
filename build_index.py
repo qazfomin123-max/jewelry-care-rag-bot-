@@ -1,8 +1,7 @@
 import os
-import glob
 os.environ["OMP_NUM_THREADS"] = "1"
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
-
+import glob
 import chromadb
 from chromadb.utils import embedding_functions
 
@@ -139,7 +138,11 @@ def build_index() -> None:
     )
 
     print(f"Готово! Проиндексировано кусков: {collection.count()}")
-
+    del embedding_function
+    del client
+    del collection
+    import gc
+    gc.collect()
 
 if __name__ == "__main__":
     build_index()
