@@ -1,5 +1,6 @@
 import logging
 import os
+import build_index
 
 from dotenv import load_dotenv
 from telegram import Update
@@ -13,6 +14,17 @@ from telegram.ext import (
 
 import rag_core
 
+def main() -> None:
+    global collection
+
+    if not TELEGRAM_TOKEN:
+        raise RuntimeError(...)
+
+    logger.info("Строю индекс базы знаний...")
+    build_index.build_index()
+
+    logger.info("Загружаю базу знаний...")
+    collection = rag_core.load_collection()
 load_dotenv()
 
 TELEGRAM_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
