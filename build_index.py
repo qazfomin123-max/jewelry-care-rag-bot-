@@ -106,13 +106,12 @@ def load_documents() -> list[dict]:
     return documents
 
 
-def main():
+def build_index() -> None:
     print("Загружаю документы из knowledge_base/...")
     documents = load_documents()
     print(f"Найдено кусков текста: {len(documents)}")
 
     print(f"Загружаю модель эмбеддингов ({EMBEDDING_MODEL_NAME})...")
-    print("При первом запуске модель скачается из интернета, это займёт время.")
     embedding_function = embedding_functions.SentenceTransformerEmbeddingFunction(
         model_name=EMBEDDING_MODEL_NAME
     )
@@ -137,9 +136,8 @@ def main():
         metadatas=[{"source": doc["source"]} for doc in documents],
     )
 
-    print(f"Готово! База сохранена в папке {CHROMA_DB_DIR}/")
-    print(f"Проиндексировано кусков: {collection.count()}")
+    print(f"Готово! Проиндексировано кусков: {collection.count()}")
 
 
 if __name__ == "__main__":
-    main()
+    build_index()
