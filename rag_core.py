@@ -48,9 +48,8 @@ def load_collection():
 def retrieve_relevant_chunks(collection, question: str, top_k: int = TOP_K,
                               max_distance: float = MAX_DISTANCE) -> list[dict]:
     results = collection.query(
-        query_texts=[question],
-        n_results=top_k,
-    )
+        query_texts=[f"query: {question}"],
+        n_results=top_k,)
 
     chunks = []
     documents = results["documents"][0]
