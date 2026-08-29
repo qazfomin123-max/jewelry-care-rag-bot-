@@ -3,9 +3,6 @@ os.environ["OMP_NUM_THREADS"] = "1"
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 os.environ["HF_HUB_DISABLE_XET"] = "1"
 import logging
-import build_index
-os.environ["OMP_NUM_THREADS"] = "1"
-os.environ["TOKENIZERS_PARALLELISM"] = "false"
 from dotenv import load_dotenv
 from telegram import Update
 from telegram.ext import (
@@ -67,9 +64,6 @@ def main() -> None:
         raise RuntimeError(
             "Не найден TELEGRAM_BOT_TOKEN. Проверь файл .env рядом с этим скриптом."
         )
-
-    logger.info("Строю индекс базы знаний...")
-    build_index.build_index()
 
     logger.info("Загружаю базу знаний...")
     collection = rag_core.load_collection()
