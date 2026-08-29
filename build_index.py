@@ -133,10 +133,10 @@ def build_index() -> None:
 
     print("Считаю эмбеддинги и сохраняю в базу...")
     collection.add(
-        ids=[doc["id"] for doc in documents],
-        documents=[doc["text"] for doc in documents],
-        metadatas=[{"source": doc["source"]} for doc in documents],
-    )
+    ids=[doc["id"] for doc in documents],
+    documents=[f"passage: {doc['text']}" for doc in documents],
+    metadatas=[{"source": doc["source"]} for doc in documents],)
+    
 
     print(f"Готово! Проиндексировано кусков: {collection.count()}")
     del embedding_function
