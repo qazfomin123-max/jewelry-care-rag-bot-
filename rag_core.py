@@ -15,8 +15,8 @@ COLLECTION_NAME = "jewelry_care_kb"
 EMBEDDING_MODEL_NAME = "intfloat/multilingual-e5-small"
 
 # Настраиваются через .env, чтобы можно было подбирать без правки кода.
-TOP_K = int(os.environ.get("RAG_TOP_K", 9))
-MAX_DISTANCE = float(os.environ.get("RAG_MAX_DISTANCE", 0.8))
+TOP_K = int(os.environ.get("RAG_TOP_K", 6))
+MAX_DISTANCE = float(os.environ.get("RAG_MAX_DISTANCE", 0.163))
 
 
 def load_collection():
