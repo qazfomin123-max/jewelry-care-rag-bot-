@@ -35,22 +35,18 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         "Спроси меня, например:\n"
         "— Как чистить золотое кольцо?\n"
         "— Можно ли мыть жемчуг с мылом?\n"
-        "— Что означает проба 585?"
-    )
-
-
+        "— Что означает проба 585?")
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     question = update.message.text
     await update.message.chat.send_action(action="typing")
 
     try:
         chunks = rag_core.retrieve_relevant_chunks(collection, question)
-        logger.info("Вопрос: %s | Найдено кусков: %s", question, len(chunks))
-        for chunk in chunks:
-            preview = chunk["text"][:60].replace("\n", " ")
-            logger.info("  dist=%.3f | %s | %s...", chunk["distance"], chunk["source"], preview)
-
-        answer = rag_core.ask_rag(collection, question)
+logger.info("Вопрос: %s | Найдено кусков: %s", question, len(chunks))
+for chunk in chunks:
+    preview = chunk["text"][:60].replace("\n", " ")
+    logger.info("  dist=%.3f | %s | %s...", chunk["distance"], chunk["source"], preview)
+answer = rag_core.ask_rag(collection, question, chunks=chunks
     except Exception:
         logger.exception("Ошибка при обработке вопроса: %s", question)
         answer = "Произошла внутренняя ошибка, попробуйте позже."
