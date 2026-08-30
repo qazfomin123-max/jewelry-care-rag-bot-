@@ -94,10 +94,7 @@ def build_system_prompt(chunks: list[dict]) -> str:
 
 
 def strip_markdown(text: str) -> str:
-    """
-    Убирает базовую markdown-разметку из ответа модели (жирный, курсив,
-    заголовки), чтобы текст нормально смотрелся в Telegram без parse_mode.
-    """
+   
     text = re.sub(r"\*\*(.+?)\*\*", r"\1", text)   # **жирный**
     text = re.sub(r"__(.+?)__", r"\1", text)        # __жирный__
     text = re.sub(r"(?<!\*)\*(?!\*)(.+?)\*(?!\*)", r"\1", text)  # *курсив*
@@ -142,9 +139,7 @@ def ask_claude(system_prompt: str, question: str) -> str:
 
 
 def ask_rag(collection, question: str) -> str:
-    """
-    Полный RAG-цикл на один вопрос: поиск -> сборка промпта -> запрос к Claude.
-    """
+    
     chunks = retrieve_relevant_chunks(collection, question)
 
     if not chunks:
