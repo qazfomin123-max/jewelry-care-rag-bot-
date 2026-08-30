@@ -138,12 +138,10 @@ def ask_claude(system_prompt: str, question: str) -> str:
     return strip_markdown(answer)
 
 
-def ask_rag(collection, question: str) -> str:
-    
-    chunks = retrieve_relevant_chunks(collection, question)
-
+def ask_rag(collection, question: str, chunks: list[dict] | None = None) -> str:
+    if chunks is None:
+        chunks = retrieve_relevant_chunks(collection, question)
     if not chunks:
         return "У меня нет информации по этому вопросу в базе знаний."
-
     system_prompt = build_system_prompt(chunks)
     return ask_claude(system_prompt, question)
