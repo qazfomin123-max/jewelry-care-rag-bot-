@@ -22,7 +22,10 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: pip install -r requirements-dev.txt
+
+      - name: Run tests
+        run: pytest
 
       - name: Build index
         run: python build_index.py

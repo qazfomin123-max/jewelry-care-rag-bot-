@@ -3,8 +3,16 @@ os.environ["OMP_NUM_THREADS"] = "1"
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 os.environ["HF_HUB_DISABLE_XET"] = "1"
 import glob
+import logging
+
 import chromadb
 from chromadb.utils import embedding_functions
+
+logging.basicConfig(
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.INFO,
+)
+logger = logging.getLogger(__name__)
 
 
 KNOWLEDGE_BASE_DIR = "knowledge_base"
@@ -109,36 +117,40 @@ def load_documents() -> list[dict]:
 
 
 def build_index() -> None:
-    print("Загружаю документы из knowledge_base/...")
+    logger.info("Загружаю документы из knowledge_base/...")
     documents = load_documents()
-    print(f"Найдено кусков текста: {len(documents)}")
+    logger.info("Найдено кусков текста: %s", len(documents))
 
-    print(f"Загружаю модель эмбеддингов ({EMBEDDING_MODEL_NAME})...")
+    logger.info("Загружаю модель эмбеддингов (%s)...", EMBEDDING_MODEL_NAME)
     embedding_function = embedding_functions.SentenceTransformerEmbeddingFunction(
         model_name=EMBEDDING_MODEL_NAME
     )
 
-    print("Открываю/создаю базу ChromaDB...")
+    logger.info("Открываю/создаю базу ChromaDB...")
     client = chromadb.PersistentClient(path=CHROMA_DB_DIR)
 
     existing_collections = [c.name for c in client.list_collections()]
     if COLLECTION_NAME in existing_collections:
         client.delete_collection(COLLECTION_NAME)
-        print("Старая версия базы удалена, строю заново.")
+        logger.info("Старая версия базы удалена, строю заново.")
 
     collection = client.create_collection(
         name=COLLECTION_NAME,
         embedding_function=embedding_function,
     )
 
-    print("Считаю эмбеддинги и сохраняю в базу...")
+    logger.info("Считаю эмбеддинги и сохраняю в базу...")
+    # Модели семейства E5 обучены с разными префиксами для запроса и для
+    # текста базы ("query: " / "passage: "). Без passage: здесь возникает
+    # асимметрия с query: в rag_core.retrieve_relevant_chunks — именно
+    # она была причиной путаницы золота с серебром (см. portfolio-case.md).
     collection.add(
         ids=[doc["id"] for doc in documents],
-        documents=[doc["text"] for doc in documents],
+        documents=[f"passage: {doc['text']}" for doc in documents],
         metadatas=[{"source": doc["source"]} for doc in documents],
     )
 
-    print(f"Готово! Проиндексировано кусков: {collection.count()}")
+    logger.info("Готово! Проиндексировано кусков: %s", collection.count())
     del embedding_function
     del client
     del collection

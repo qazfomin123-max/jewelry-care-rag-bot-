@@ -1,5 +1,11 @@
-requests
-python-dotenv
-chromadb
-sentence-transformers
-python-telegram-bot
+# CPU-сборка torch — иначе pip установит CUDA-билд (несколько ГБ),
+# а Railway (и большинство хостингов для такого бота) — без GPU.
+# Если когда-нибудь понадобится GPU — уберите эту строку и версию torch ниже.
+--extra-index-url https://download.pytorch.org/whl/cpu
+
+requests~=2.32
+python-dotenv~=1.2
+chromadb~=1.5
+sentence-transformers~=5.6
+python-telegram-bot~=22.8
+torch~=2.11
